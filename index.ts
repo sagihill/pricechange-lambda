@@ -9,7 +9,7 @@ exports.handler = async (event: any) => {
     console.log("Started handling price change event: ", event);
     // const price = await getPrice(event.symbol);
     // const priceId = await insertPrice(event.symbol, price);
-    console.log("Finished handling price change event...");
+    // console.log("Finished handling price change event...");
     return true;
   } catch (error) {
     console.log("Something went wrong handling event", [error, event]);
