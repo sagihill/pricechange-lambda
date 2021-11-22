@@ -60,8 +60,9 @@ async function insertPriceChange(
   });
 
   const res = await knex("PriceChanges")
-    .select("*")
-    .from("PriceChanges")
+    .select()
+    .from("INFORMATION_SCHEMA.COLUMNS")
+    .where("TABLE_NAME = N'PriceChanges'");
   console.log(JSON.stringify(res));
   return res[0];
 
