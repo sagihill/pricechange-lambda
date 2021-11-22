@@ -36,8 +36,9 @@ async function getLastPrice(id: number, symbol: string): Promise<number> {
   });
 
   const res = await knex("Prices").where("id", id - 1);
-  console.log(`Last price of ${symbol} was ${JSON.stringify(res[0])}`);
-  return res[0];
+  const lastPrice = res[0].price;
+  console.log(`Last price of ${symbol} was ${lastPrice}`);
+  return lastPrice;
 }
 
 async function insertPriceChange(
