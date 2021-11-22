@@ -59,7 +59,7 @@ async function insertPriceChange(
     connection,
   });
 
-  const res = await knex("PriceChanges").insert({ symbol, priceChange });
+  const res = await knex("PriceChanges").insert({ symbol, price: priceChange });
   console.log("Finished inserting price change into the database...");
   return res[0];
 }
