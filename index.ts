@@ -59,9 +59,16 @@ async function insertPriceChange(
     connection,
   });
 
-  const res = await knex("PriceChanges").insert({ symbol, price: priceChange });
-  console.log("Finished inserting price change into the database...");
+  const res = await knex("PriceChanges")
+    .select("*")
+    .from("FROM INFORMATION_SCHEMA.COLUMNS")
+    .where("TABLE_NAME = N'PriceChanges'");
+  console.log(JSON.stringify(res));
   return res[0];
+
+  // const res = await knex("PriceChanges").insert({ symbol, price: priceChange });
+  // console.log("Finished inserting price change into the database...");
+  // return res[0];
 }
 
 function round(num: number): number {
