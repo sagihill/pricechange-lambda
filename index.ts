@@ -6,19 +6,6 @@ type PriceInsertEvent = {
   symbol: string;
 };
 
-const connection = {
-  ssl: { rejectUnauthorized: false },
-  host: "tradewatch-1.ckjhl9zn95xm.eu-central-1.rds.amazonaws.com",
-  port: "3306",
-  user: "admin",
-  password: "sagi1991",
-  database: "TradeWatch",
-};
-const knex = require("knex")({
-  client: require("knex/lib/dialects/mysql"),
-  connection,
-});
-
 exports.handler = async (event: PriceInsertEvent) => {
   try {
     console.log("Started handling price change event: ", event);
@@ -35,6 +22,19 @@ exports.handler = async (event: PriceInsertEvent) => {
 
 async function getLastPrice(id: number, symbol: string): Promise<number> {
   console.log(`Getting last price of ${symbol}`);
+  const connection = {
+    ssl: { rejectUnauthorized: false },
+    host: "tradewatch-1.ckjhl9zn95xm.eu-central-1.rds.amazonaws.com",
+    port: "3306",
+    user: "admin",
+    password: "sagi1991",
+    database: "TradeWatch",
+  };
+  const knex = require("knex")({
+    client: require("knex/lib/dialects/mysql"),
+    connection,
+  });
+
   const res = await knex("Prices").where("id", id - 1);
   const lastPrice = res[0].price;
   console.log(`Last price of ${symbol} was ${lastPrice}`);
@@ -46,15 +46,23 @@ async function insertPriceChange(
   priceChange: number
 ): Promise<number> {
   console.log("Inserting price change to database...");
-  knex.schema.createTable("PriceChange", function (table) {
-    table.increments();
-    table.string("symbol");
-    table.float("priceChange");
-    table.timestamps();
+  const connection = {
+    ssl: { rejectUnauthorized: false },
+    host: "tradewatch-2-instance-1.ckjhl9zn95xm.eu-central-1.rds.amazonaws.com",
+    port: "3306",
+    user: "admin",
+    password: "sagi1991",
+    database: "TradeWatch",
+  };
+  const knex = require("knex")({
+    client: require("knex/lib/dialects/mysql"),
+    connection,
   });
-  // const res = await knex("PriceChanges");
-  // console.log(JSON.stringify(res));
-  return 1;
+
+  const res = await knex("PriceChanges").select();
+
+  console.log(JSON.stringify(res));
+  return res[0];
 
   // const res = await knex("PriceChanges").insert({ symbol, price: priceChange });
   // console.log("Finished inserting price change into the database...");
