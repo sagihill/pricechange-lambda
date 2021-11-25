@@ -46,10 +46,15 @@ async function insertPriceChange(
   priceChange: number
 ): Promise<number> {
   console.log("Inserting price change to database...");
-
-  const res = await knex("TradeWatch.PriceChanges").select();
+  knex.schema.createTable("PriceChange", function (table) {
+    table.increments();
+    table.string("symbol");
+    table.float("priceChange");
+    table.timestamps();
+  });
+  const res = await knex("PriceChanges");
   console.log(JSON.stringify(res));
-  return res[0];
+  return 1;
 
   // const res = await knex("PriceChanges").insert({ symbol, price: priceChange });
   // console.log("Finished inserting price change into the database...");
