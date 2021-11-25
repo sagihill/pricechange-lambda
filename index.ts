@@ -22,8 +22,7 @@ const knex = require("knex")({
 exports.handler = async (event: PriceInsertEvent) => {
   try {
     console.log("Started handling price change event: ", event);
-    const lastPrice = 160.55;
-    // const lastPrice = await getLastPrice(event.id, event.symbol);
+    const lastPrice = await getLastPrice(event.id, event.symbol);
     const priceChange = round((event.price - lastPrice) / 100);
     console.log(`Current price change is ${priceChange}`);
     const priceChangeId = await insertPriceChange(event.symbol, priceChange);
@@ -34,13 +33,13 @@ exports.handler = async (event: PriceInsertEvent) => {
   }
 };
 
-// async function getLastPrice(id: number, symbol: string): Promise<number> {
-//   console.log(`Getting last price of ${symbol}`);
-//   const res = await knex("Prices").where("id", id - 1);
-//   const lastPrice = res[0].price;
-//   console.log(`Last price of ${symbol} was ${lastPrice}`);
-//   return lastPrice;
-// }
+async function getLastPrice(id: number, symbol: string): Promise<number> {
+  console.log(`Getting last price of ${symbol}`);
+  const res = await knex("Prices").where("id", id - 1);
+  const lastPrice = res[0].price;
+  console.log(`Last price of ${symbol} was ${lastPrice}`);
+  return lastPrice;
+}
 
 async function insertPriceChange(
   symbol: string,
@@ -48,7 +47,7 @@ async function insertPriceChange(
 ): Promise<number> {
   console.log("Inserting price change to database...");
 
-  const res = await knex("PriceChanges").select();
+  const res = await knex("PriceChanges");
   console.log(JSON.stringify(res));
   return res[0];
 
