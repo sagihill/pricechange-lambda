@@ -47,7 +47,7 @@ async function insertPriceChange(
 ): Promise<number> {
   console.log("Inserting price change to database...");
 
-  const res = await knex("PriceChanges");
+  const res = await knex("Prices");
   console.log(JSON.stringify(res));
   return res[0];
 
