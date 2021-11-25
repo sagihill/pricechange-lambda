@@ -59,7 +59,7 @@ async function insertPriceChange(
     connection,
   });
 
-  const res = await knex("Prices")
+  const res = await knex("PriceChanges")
     .select()
   console.log(JSON.stringify(res));
   return res[0];
