@@ -52,8 +52,8 @@ async function insertPriceChange(
     table.float("priceChange");
     table.timestamps();
   });
-  const res = await knex("PriceChanges");
-  console.log(JSON.stringify(res));
+  // const res = await knex("PriceChanges");
+  // console.log(JSON.stringify(res));
   return 1;
 
   // const res = await knex("PriceChanges").insert({ symbol, price: priceChange });
