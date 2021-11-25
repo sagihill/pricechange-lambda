@@ -52,7 +52,7 @@ async function insertPriceChange(
     port: "3306",
     user: "admin",
     password: "sagi1991",
-    database: "TradeWatch",
+    database: "TradeWatch2",
   };
   const knex = require("knex")({
     client: require("knex/lib/dialects/mysql"),
